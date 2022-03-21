@@ -1,0 +1,28 @@
+// THE OLD WAY TO GET ACCURATE POLYLINES:
+// YOU CAN GET THE SAME RESOLUTION BY USING THE URL API WITH `&overview=full` IN THE REQUEST
+
+var MapboxDirections = require('@mapbox/mapbox-gl-directions');
+
+// MARK:- Get Path Using MapboxGLDirections
+const directions = new MapboxDirections({
+  accessToken: MAPBOX_API_TOKEN,
+  profile: 'mapbox/driving',
+  interactive: false,
+  controls: {
+    inputs: false,
+    instructions: false,
+    profileSwitcher: false,
+  },
+});
+
+directions.on('route', (result) => {
+  const polyline = result.route[0].geometry;
+  console.log('MapboxGLDirections:', polyline);
+});
+
+map.on('load', () => {
+  //map.addControl(directions);
+
+  directions.setOrigin(locations.school); // can be address in form setOrigin("12, Elm Street, NY")
+  directions.setDestination(locations.garden); // can be address
+});
